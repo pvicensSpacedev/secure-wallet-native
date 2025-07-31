@@ -1,6 +1,6 @@
 require 'json'
 
-package = JSON.parse(File.read(File.join(__dir__, '../package.json')))
+package = JSON.parse(File.read(File.join(__dir__, './package.json')))
 
 Pod::Spec.new do |s|
   s.name           = 'SecureWallet'
@@ -11,8 +11,8 @@ Pod::Spec.new do |s|
   s.license        = { :type => package['license'], :text => 'MIT License' }
   s.author         = { package['author'].split(' <')[0] => package['author'].split('<')[1].split('>')[0] }
   s.platform       = :ios, '15.1'
-  s.source         = { :git => package['repository']['url'], :tag => s.version.to_s }
-  s.source_files   = '*.{h,m}'
+  s.source         = { :git => package['repository']['url'], :tag => "v#{s.version}" }
+  s.source_files   = 'ios/*.{h,m}'
   s.requires_arc   = true
   
   s.dependency 'React-Core'
@@ -33,4 +33,7 @@ Pod::Spec.new do |s|
   }
   
   s.module_name = 'SecureWallet'
+  
+  # Ensure proper module structure for auto-linking
+  s.module_map = 'ios/SecureWallet.modulemap'
 end
