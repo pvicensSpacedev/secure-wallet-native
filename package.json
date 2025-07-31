@@ -1,0 +1,55 @@
+{
+  "name": "secure-wallet-native",
+  "version": "1.0.6",
+  "description": "Native SecureWallet module for React Native with iOS Secure Enclave support",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "echo 'No build step needed'",
+    "test": "echo 'No tests specified'",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react-native",
+    "secure-wallet",
+    "ios",
+    "objective-c",
+    "secure-enclave",
+    "cryptography",
+    "secp256k1"
+  ],
+  "author": "Patricio Vicens <pvicens@spacedev.uy>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pvicensSpacedev/secure-wallet-native.git"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "react-native": {
+    "ios": {
+      "sourceDir": "./ios"
+    }
+  },
+  "codegenConfig": {
+    "libraries": [
+      {
+        "name": "SecureWallet",
+        "type": "modules",
+        "jsSrcsDir": ".",
+        "android": {
+          "javaPackageName": "com.securewallet"
+        }
+      }
+    ]
+  },
+  "platforms": {
+    "ios": "15.1"
+  }
+} 

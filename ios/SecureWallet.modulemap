@@ -1,0 +1,6 @@
+framework module SecureWallet {
+  umbrella header "SecureWallet.h"
+  
+  export *
+  module * { export * }
+} 
