@@ -1,13 +1,16 @@
 #import <React/RCTBridgeModule.h>
 #import <Foundation/Foundation.h>
+#import <LocalAuthentication/LocalAuthentication.h>
 
 @interface SecureWallet : NSObject <RCTBridgeModule>
+
+@property (nonatomic, strong) LAContext *cachedAuthContext;
 
 // Check for existing wallet
 - (void)checkForExistingWallet:(RCTPromiseResolveBlock)resolve
                       rejecter:(RCTPromiseRejectBlock)reject;
 
-// Main wallet generation method
+// Main wallet generation method (enhanced to optionally return mnemonic)
 - (void)generateSecureWallet:(NSDictionary *)config
                    resolver:(RCTPromiseResolveBlock)resolve
                    rejecter:(RCTPromiseRejectBlock)reject;
@@ -36,5 +39,13 @@
 - (BOOL)deleteMnemonicFromKeychain;
 - (BOOL)storeMnemonicInKeychain:(NSString *)mnemonic;
 - (NSData *)deriveEncryptionKeyFromMasterKey:(SecKeyRef)masterKey;
+- (BOOL)parseDERSigSafe:(NSData *)der r:(NSMutableData **)rOut s:(NSMutableData **)sOut;
+- (void)canonicalizeS:(NSMutableData *)s;
+
+// Authentication methods
+- (void)authenticateUser:(void (^)(BOOL success, NSError *error))completion;
+- (void)authenticateForWalletAccess:(RCTPromiseResolveBlock)resolve
+                          rejecter:(RCTPromiseRejectBlock)reject;
+- (void)invalidateAuthContext;
 
 @end
