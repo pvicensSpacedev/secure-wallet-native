@@ -581,7 +581,7 @@ static inline void zeroize_mutable(NSMutableData *data) {
     }
     NSMutableData *mnData = [pt mutableCopy];
     // wipe the original CFData buffer ASAP
-    zeroize_mutable((NSData *)pt);
+    zeroize_mutable([pt mutableCopy]);
     NSString *mn = [[NSString alloc] initWithData:mnData encoding:NSUTF8StringEncoding];
     // wipe our mutable copy too
     zeroize_mutable(mnData);
@@ -645,7 +645,6 @@ static inline void zeroize_mutable(NSMutableData *data) {
     }
     
     NSData *encryptedPrivateKeyData = (__bridge_transfer NSData *)result;
-static inline void zeroize_mutable(NSMutableData *data) {
     // Unwrap (decrypt) with Enclave (will prompt user)
     NSError *unwrapErr = nil;
     NSData *pt = [self unwrapWithEnclave:encryptedPrivateKeyData error:&unwrapErr];
@@ -654,12 +653,12 @@ static inline void zeroize_mutable(NSMutableData *data) {
         return nil;
     }
     if (pt.length != 32) {
-        zeroize_mutable((NSData *)pt);
+        zeroize_mutable([pt mutableCopy]);
         RCTLogError(@"Invalid private key length after unwrap");
         return nil;
     }
     NSMutableData *privateKeyData = [pt mutableCopy];
-    zeroize_mutable((NSData *)pt);
+    zeroize_mutable([pt mutableCopy]);
     
     // Derive public key from private key
     NSString *publicKeyHex = [self derivePublicKeyFromPrivateKey:privateKeyData];
@@ -1016,13 +1015,13 @@ RCT_EXPORT_METHOD(signTransactionHash:(NSString *)transactionHash
     
     if (pt.length != 32) {
         RCTLogError(@"❌ Invalid private key length after unwrap: %lu (expected 32)", (unsigned long)pt.length);
-        zeroize_mutable((NSData *)pt);
+        zeroize_mutable([pt mutableCopy]);
         reject(@"decrypt_error", @"Invalid private key length after unwrap", nil);
         return;
     }
     
     NSMutableData *privateKeyData = [pt mutableCopy];
-    zeroize_mutable((NSData *)pt);
+    zeroize_mutable([pt mutableCopy]);
     
     // Convert transaction hash to data
     NSData *hashData = [self hexStringToData:transactionHash];
