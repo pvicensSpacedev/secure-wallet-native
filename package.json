@@ -1,6 +1,6 @@
 {
   "name": "secure-wallet-native",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Native SecureWallet module for React Native with iOS Secure Enclave support",
   "main": "index.js",
   "types": "index.d.ts",
